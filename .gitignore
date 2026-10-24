@@ -1,0 +1,6 @@
+# Quellmaterial (groß, nicht ins Repo)
+*.pdf
+It-sicherheit_alt/
+.DS_Store
+**/.DS_Store
+*.textClipping
