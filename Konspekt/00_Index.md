@@ -2,10 +2,14 @@
 
 > **Экзамен:** ~11.02.2027 · **Open Book** (интернет и свои материалы можно, ИИ нельзя) · **Цель:** 1,0–2,0
 >
-> **Как пользоваться на экзамене:**
-> 1. Открыть этот файл → **Cmd+F** по ключевому слову (работает и по-немецки, и по-русски).
-> 2. Перейти в указанный файл/раздел → там готовое объяснение + Musterantwort.
-> 3. Если нужно процитировать — оригинал в скрипте.
+> **Как пользоваться на экзамене (экзамен: 60–80 вопросов, часть коротких, часть текстом вручную):**
+> 1. **Короткий вопрос** (назвать / определить / 1a-2b-3c / верно-неверно) → сразу **[12_Schnellzugriff.md](12_Schnellzugriff.md)**, Cmd+F по слову. Ответ в одну строку.
+> 2. **Открытый вопрос текстом** → эта таблица / Stichwortverzeichnis → глава по теме, там **Musterantwort**.
+> 3. **Вопрос из практикума** → [08_Praktika.md](08_Praktika.md) (блоки ❓ Fragen aus den Anleitungen).
+> 4. **Лог/Wireshark** → [09_Wireshark_Guide.md](09_Wireshark_Guide.md). **Расчёт** → §4 ниже.
+> 5. Cmd+F работает и по-немецки, и по-русски. Цитата дословно — оригинал в скрипте.
+>
+> ⏱️ **Тайминг:** 60–80 вопросов → ~1–1,5 мин на вопрос. Первый проход — всё, что знаешь сразу; остальное помечай и ищи во втором проходе через Schnellzugriff. Не гугли то, что быстрее найти у себя.
 >
 > **Номера страниц:** везде указана страница *скрипта* (как напечатано внизу страницы).
 > В PDF-просмотрщике это страница **+6** (стр. скрипта 13 = стр. PDF 19).
@@ -22,11 +26,12 @@
 | [04_Anonymitaet_TOR.md](04_Anonymitaet_TOR.md) | Identifizierung, Proxy, TOR, Hidden Services, I2P, JonDo | 99–118 | ✅ |
 | [05_Malware.md](05_Malware.md) | Malware-Typen (Virus/Wurm/Trojaner…), Erkennung | 119–140 | ✅ |
 | [06_Kryptografie.md](06_Kryptografie.md) | Sym./Asym., AES, Modi, RSA 🧮, Hash, DH 🧮, MAC, Signaturen, Zertifikate, TLS | 141–198 | ✅ |
-| 07_Zugriffskontrolle.md | Zugriffsmatrix, ACL, DAC/MAC, RBAC, Bell-LaPadula, Chinese Wall | Folien | ⏳ |
+| [07_Zugriffskontrolle.md](07_Zugriffskontrolle.md) | Zugriffsmatrix, ACL, DAC/MAC, RBAC, Bell-LaPadula, Chinese Wall | Folien | ✅ |
 | [08_Praktika.md](08_Praktika.md) | Virtualisierung, MitM/Phishing, Websicherheit/Darkweb, Pentest, Android, CrypTool | Praktika | ✅ |
 | [09_Wireshark_Guide.md](09_Wireshark_Guide.md) | Logs lesen, Filter, TCP-Flags, **Angriffssignaturen**, Übungslogs | — | ✅ |
 | [10_Glossar_DE_RU.md](10_Glossar_DE_RU.md) | Alphabetisches Glossar + Verwechslungs-Trainer | — | ✅ |
 | [11_Uebungen.md](11_Uebungen.md) | **Probeklausur** (100 P, alle Themen, mit Lösungen) | — | ✅ |
+| [12_Schnellzugriff.md](12_Schnellzugriff.md) | ⚡ **Kurzantworten** für kurze Fragen + alle Zuordnungstabellen | — | ✅ |
 
 ---
 

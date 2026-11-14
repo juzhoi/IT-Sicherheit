@@ -186,6 +186,116 @@ Ziel: veraltetes **WinXP** übernehmen. VMs: ForDeb (Angreifer), GSM (Scanner), 
 
 ---
 
+# ❓ Fragen aus den Anleitungen (direkt aus den Praktikums-PDFs)
+> Это вопросы, которые Schildbach **прямо задаёт в тексте лаб** («Können Sie erklären…?», «Warum…?»), плюс явные Lernziele из разделов Fazit. Их проще всего перенести в экзамен. Ответы на уровне понимания/защиты — на экзамене спрашивают концепт и Gegenmaßnahme, а не инструкцию по взлому.
+
+### Praktikum 01 — Virtualisierung
+**P1.1 ⭐ Warum ein NAT-Netzwerk und nicht Netzwerkbrücke / internes Netz?**
+> **✅** Anforderungen: Gäste reden **untereinander** (Gast↔Gast), der **Host bleibt geschützt** (kein Gast→Host, damit Experimente ihn nicht kompromittieren), Gäste haben bei Bedarf **Internet**. Nur das **NAT-Netzwerk** erfüllt alle drei. Netzwerkbrücke hängt die VMs direkt ins echte LAN (gefährlich), internes Netz hat kein Internet, einfaches NAT keine Gast↔Gast-Kommunikation.
+
+**P1.2 🧮 Wie viele Geräte passen in 192.168.42.0/24?**
+> **✅** 2⁸ − 2 = **254** (ohne Netz-/Broadcast-Adresse); im VirtualBox-NAT-Netz zusätzlich .1 (Gateway), .2 (Host-Loopback), .3 (DHCP) reserviert → **251**.
+
+**P1.3 🧮 Können 192.168.42.37/26 und .70/26 ohne Router kommunizieren?**
+> **✅** Nein. /26 → Maske 255.255.255.192, Blöcke à 64. 37 → Netz **.0/26**, 70 → Netz **.64/26** → verschiedene Subnetze → Router nötig.
+
+**P1.4 ⭐ Wozu dient ein Snapshot, was ist der Nachteil beim Zurücksetzen?**
+> **✅** Speichert den VM-Zustand; nach Fehlern zurücksetzbar, ohne die VM neu zu importieren. Nachteil: **alle Änderungen seit dem Snapshot** (Dateien, Updates, Konfiguration) gehen verloren.
+
+**P1.5 Wie interpretieren Sie `10 transmitted, 0 received, 100% packet loss`?**
+> **✅** Kein ICMP-Echo beantwortet → Ziel nicht erreichbar: falsche IP, VM aus, falscher Netzmodus/anderes Subnetz oder ICMP gefiltert.
+
+### Praktikum 02 — MitM + Phishing
+**P2.1 ⭐⭐ (Aufgabe 2.15) Kann man am ARP-Cache allein Angreifer und Opfer erkennen? Hilft das ARP-Monitoring?**
+> **✅** Am Cache allein nur eingeschränkt: man sieht, dass **zwei IPs dieselbe MAC** haben → Spoofing läuft; diese MAC gehört meist dem **Angreifer**. Welche IP „echt" zu dieser MAC gehört, verrät der Cache nicht eindeutig. Das **ARP-Monitoring** (`ip monitor neigh`) zeigt den **Verlauf**: die Server-IP wechselt plötzlich auf eine MAC, die schon einer anderen IP gehört → daraus lässt sich die Angreifer-IP ableiten. Sicher klappt es erst mit einer Referenz der echten MACs (voriger Cache-Stand, statische Einträge, Wireshark-Expertinfo).
+
+**P2.2 ⭐ Warum muss IP-Forwarding aktiviert sein?**
+> **✅** Sonst verwirft der Angreifer die umgeleiteten Pakete → Verbindung bricht ab (DoS), Angriff fällt auf. Mit Forwarding leitet er sie ans echte Ziel weiter → das Opfer kommuniziert **unauffällig** normal, während er mitliest.
+
+**P2.3 Wozu der promiskuitive Modus?**
+> **✅** Normal verarbeitet die Netzkarte nur Pakete an die **eigene** MAC (+ Broadcast). Promisc verarbeitet **alle** ankommenden Pakete → nötig zum Sniffing fremden Verkehrs.
+
+**P2.4 ⭐ Welche Schutzziele verletzt der MitM-Angriff? Wann wären weitere betroffen?**
+> **✅** **Vertraulichkeit** stark (unberechtigtes Mitlesen). **Integrität** und **Verfügbarkeit** im Szenario **nicht** (nichts verändert/blockiert). Integrität wäre verletzt, wenn Pakete manipuliert werden (Bilder → Werbung); Verfügbarkeit, wenn Pakete verworfen/Zugriff unterbunden wird.
+
+**P2.5 ⭐⭐ Wem gehört `google.sicherer-login.de`? Ist HTTPS ein Vertrauensnachweis?**
+> **✅** Besitzer = nur **Domain + TLD** = **sicherer-login.de**; „google" ist nur frei wählbare Subdomain (Täuschung). **HTTPS ist kein Vertrauensnachweis** — es zeigt nur Verschlüsselung, nicht den Besitzer; auch Phishing-Seiten haben Zertifikate.
+
+**P2.6 Warum funktioniert ARP-Spoofing nur im lokalen Netz?**
+> **✅** ARP arbeitet auf **Schicht 2** innerhalb eines **Subnetzes**; ARP-Pakete werden nicht geroutet, über Grenzen geht es nur übers Gateway. Für MitM über Netzgrenzen braucht man andere Techniken (DNS-Spoofing, kompromittierter Router).
+
+### Praktikum 03 — Websicherheit + Dark Web
+**P3.1 ⭐⭐ Warum loggt `' or 1=1; -- -` als Nutzername ohne Passwort ein?**
+> **✅** Eingabe wird **ungeprüft** in `… WHERE username='<Eingabe>' …` eingesetzt → `… WHERE username='' OR 1=1; -- -'`. `OR 1=1` immer wahr (**Tautologie**), `-- -` kommentiert die Passwortprüfung aus → erste Zeile (admin) wird zurückgegeben. Schutz: **Prepared Statements**/parametrisierte Abfragen, Validierung.
+
+**P3.2 ⭐ Warum schützt `maxlength="50"` nicht vor XSS? Betroffene Schutzziele?**
+> **✅** Die Grenze steht nur im HTML, **clientseitig** → mit Entwicklerwerkzeugen entfernbar oder per direkter Anfrage umgehbar. Nötig: **serverseitige** Validierung + **Output-Encoding**. Betroffen: **Integrität** der Seite, je nach Skript **Vertraulichkeit** (Session-Diebstahl).
+
+**P3.3 Was zeigt der sqlmap-Fund `5f4dcc…cf99 (password)`?**
+> **✅** Passwort als **MD5-Hash** gespeichert (besser als Klartext), aber MD5 ist **schnell und ungesalzen** und „password" ein häufiges Wort → **Wörterbuchangriff** findet es sofort. Richtig: **Salt** + langsame Passwort-Hashfunktion + starke Passwörter.
+
+**P3.4 ⭐⭐ Grenzen Sie Surface/Deep/Dark Web und Darknet ab.**
+> **✅** **Internet/Darknet** = Infrastruktur, **Surface/Deep/Dark Web** = Inhalte. **Surface Web**: indexiert, frei (kleinster Teil). **Deep Web**: nicht indexiert, hinter Login (größter Teil, z. B. Onlinebanking). **Dark Web**: im Darknet, braucht spezielle Software (Tor, `.onion`). **Darknet** = das Netz, **Dark Web** = die Inhalte darauf.
+
+**P3.5 Warum ist Onion over VPN sinnvoll?**
+> **✅** Allein hat jede Technik eine Lücke: der VPN-Server kennt Quelle+Ziel+Inhalt; bei Tor sieht der Eintrittsknoten die echte IP. Bei **VPN→Tor** sieht der Guard nur die VPN-IP, der VPN-Anbieter nur, dass Tor genutzt wird (nicht Ziel/Inhalt). Preis: geringerer Durchsatz.
+
+**P3.6 Nennen Sie je zwei Vor- und Nachteile von Tor.**
+> **✅** Vorteile: dynamische Route über weltweite Knoten (schwer nachzuverfolgen); Trennung Identität (IP) ↔ Inhalt; schwer staatlich zu zwingen (kein zentraler Betreiber). Nachteile: wer genug Knoten überwacht, deckt Verkehr auf; kein Schutz, wenn ersten+letzten Knoten eine Partei kontrolliert; niedriger Durchsatz.
+
+### Praktikum 04 — Penetrationstest (Fazit = Lernziele ⭐⭐)
+**P4.1 ⭐⭐ Was ist ein Portscanner und wie arbeitet er grob?**
+> **✅** Werkzeug der **Informationsbeschaffung** (z. B. nmap). Schickt an viele Ports Anfragen und wertet die Antwort aus: **SYN/ACK** → offen, **RST** → geschlossen, keine Antwort → **gefiltert** (Firewall). Aus offenen Ports schließt man auf **Dienste** (445→SMB), mit Zusatzoptionen auf **Version/OS**. So findet man mögliche Angriffspunkte.
+
+**P4.2 ⭐⭐ Unterschied Exploit vs. Payload?**
+> **✅** Der **Exploit** nutzt eine **konkrete Schwachstelle** aus, um **Zugriff** zu bekommen (allein kein weiterer Schaden). Der **Payload** ist der danach ausgeführte **Schadcode** (hier eine Fernsteuer-Session). Bild: Exploit = Tür öffnen, Payload = was drinnen passiert.
+
+**P4.3 ⭐ Nennen und beschreiben Sie die Phasen eines gezielten Angriffs.**
+> **✅** (1) **Reconnaissance** (wichtigster Schritt): Hosts/Ports/OS scannen, Schwachstellen suchen. (2) **Exploit**: Lücke ausnutzen, eindringen. (3) **Zugangssicherung/Ausbreitung**. (4) **Loot**: Informationen sammeln. (5) **Spuren verschleiern**. Im Praktikum: nmap → Greenbone → Metasploit (ms08_067_netapi) → Meterpreter.
+
+**P4.4 Warum klassifizierte nmap bei einigen Hosts kein OS?**
+> **✅** OS-Fingerprinting braucht **mind. einen offenen und einen geschlossenen Port** und eindeutige Antwortmuster. Gründe für „unbekannt": keine/zu wenige offene Ports (virtuelle NAT-Infrastruktur), **Firewall filtert**, kein passendes Muster, oder nmap lief **ohne sudo** (OS-Erkennung nur mit Rechten).
+
+**P4.5 Portscanner vs. Schwachstellenscanner?**
+> **✅** Der **Portscanner** findet offene Ports und vermutete Dienste. Der **Schwachstellenscanner** (OpenVAS/GSM) prüft zusätzlich auf **bekannte Schwachstellen** (NVT/CVE-Datenbank) und Konfigurationsfehler mit Hinweisen — mächtiger, aber **invasiver** → kann ein **IDS** alarmieren.
+
+### Praktikum 05 — Android-Trojaner (Fazit = „Moral" ⭐)
+**P5.1 ⭐ Unterschied zu Praktikum 04: wird hier eine Schwachstelle ausgenutzt?**
+> **✅** Nein. In P04 wird eine **Schwachstelle** ausgenutzt (Exploit). Hier wird Schadcode in eine harmlose App (Spiel „2048") **versteckt** und der Nutzer startet sie selbst → klassischer **Trojaner** (Täuschung), mit dauerhaftem Zugang = **Backdoor**.
+
+**P5.2 ⭐ Reverse- vs. Bind-Verbindung — welche und warum?**
+> **✅** **reverse_tcp**: das **Opfer verbindet sich zum Angreifer**. Vorteil: man muss die (veränderliche, oft hinter NAT liegende) IP des Smartphones nicht kennen, und Firewalls, die nur **eingehende** Verbindungen blocken, werden umgangen. **bind** öffnet einen Port auf dem Opfer, zu dem der Angreifer (und potenziell Dritte) sich verbinden — eingehend oft geblockt.
+
+**P5.3 Warum ist eine App-Signatur nötig, aber kein echter Vertrauensnachweis?**
+> **✅** Android verlangt eine **digitale Signatur**, um Autor zuzuordnen und die App vor **Manipulation** zu schützen (Integrität). Sie muss aber **nicht** von einer Autorität bestätigt werden — ein **selbst erzeugtes** Zertifikat genügt. Darum belegt eine Signatur allein **nicht**, dass die App vertrauenswürdig ist.
+
+**P5.4 ⭐ „Moral von der Geschichte" (Fazit): wie schützt man sich?**
+> **✅** Nur ~33 % der Virenscanner erkannten den einfachen Trojaner. Schutz liegt v. a. beim Nutzer: Apps nur aus **vertrauenswürdigen Quellen** installieren und die **angeforderten Berechtigungen** kritisch prüfen (ein Spiel braucht keine SMS-/Kontakt-/Standort-Rechte).
+
+### Praktikum 06 — Kryptographie (CrypTool)
+**P6.1 ⭐ Kryptografie, Kryptoanalyse, Kryptologie?**
+> **✅** **Kryptografie** = Verfahren zum **Verschlüsseln** entwerfen/beschreiben. **Kryptoanalyse** = Methoden zum **Brechen** solcher Verfahren. **Kryptologie** = Oberbegriff für beides (Teil der Informationssicherheit).
+
+**P6.2 ⭐⭐ Warum ist Caesar trivial zu brechen, Vigenère aber nicht mit einfacher Häufigkeitsanalyse?**
+> **✅** Caesar ist **monoalphabetisch** — jeder Klartextbuchstabe wird **immer gleich** abgebildet → Buchstabenhäufigkeit verrät die Verschiebung, außerdem nur **25 Schlüssel** (Brute-Force). Vigenère ist **polyalphabetisch** — das wiederholte Schlüsselwort chiffriert denselben Buchstaben je nach Position **unterschiedlich** → die Häufigkeit verwischt. Man muss erst die **Schlüssellänge** bestimmen (➕ Kasiski/Friedman), dann je Position eine Häufigkeitsanalyse.
+
+**P6.3 ⭐ Wovon hängt die Sicherheit von Vigenère ab?**
+> **✅** Von der **Schlüssellänge**: Länge 1 = Caesar; je länger/zufälliger der Schlüssel, desto sicherer. Grenzfall = Schlüssel so lang wie der Text und zufällig → **One-Time-Pad** (🔗 [06 → 6.3](06_Kryptografie.md)).
+
+**P6.4 ⭐⭐ ECB vs. CBC — warum bleibt ein Bild im ECB-Modus erkennbar?**
+> **✅** **ECB** verschlüsselt jeden Block **unabhängig** → **gleiche Klartextblöcke ergeben gleiche Chiffreblöcke**, also bleiben Strukturen/Muster des Bildes sichtbar. **CBC** verknüpft jeden Klartextblock per **XOR mit dem vorigen Chiffreblock** → gleiche Inhalte ergeben verschiedene Chiffreblöcke → Muster verschwinden. Darum ist der Verkettungsmodus für die Sicherheit entscheidend.
+
+**P6.5 Warum ist DES unsicher, und was ist die Lösung?**
+> **✅** DES hat nur **56 Bit** Schlüssel → per **Brute-Force** angreifbar. Lösung: mehrfache Anwendung, v. a. **3DES (Triple-DES)** mit effektiv größerer Schlüssellänge; moderner Nachfolger ist **AES**.
+
+**P6.6 ⭐ Grundeigenschaften von AES?**
+> **✅** Symmetrische **Blockchiffre** (Rijndael-Algorithmus), Blockgröße 128/192/256 Bit, Schlüssellänge **128/192/256 Bit**; Runden mit Substitution, Zeilenverschiebung, Spaltenmischung, Rundenschlüssel-XOR. Gilt als sehr sicher, eingesetzt in **TLS, IPSec, 802.11i, SSH**.
+
+**P6.7 Was braucht ein Known-Plaintext-Angriff (CBC-Beispiel)?**
+> **✅** Der Angreifer braucht **Klartext und zugehörigen Geheimtext** (nicht den Schlüssel). Weil CBC die Blöcke per XOR verkettet, kann man durch Ändern eines Chiffreblocks den **nächsten** entschlüsselten Block gezielt verändern (der eigene Block wird dabei zerstört). Praktisch gegen **LUKS**-Partitionen genutzt → zeigt: CBC schützt **Vertraulichkeit**, aber ohne zusätzlichen Schutz **nicht die Integrität** (dafür MAC/authentifizierte Verschlüsselung).
+
+---
+
 # Aufgaben — типичные [T] / перенос [N]
 Решения сразу под задачей.
 
