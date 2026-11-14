@@ -4,7 +4,7 @@
 >
 > **Как пользоваться на экзамене (экзамен: 60–80 вопросов, часть коротких, часть текстом вручную):**
 > 1. **Короткий вопрос** (назвать / определить / 1a-2b-3c / верно-неверно) → сразу **[12_Schnellzugriff.md](12_Schnellzugriff.md)**, Cmd+F по слову. Ответ в одну строку.
-> 2. **Открытый вопрос текстом** → эта таблица / Stichwortverzeichnis → глава по теме, там **Musterantwort**.
+> 2. **Открытый вопрос текстом** → **[13_Antwortbank.md](13_Antwortbank.md)**: готовый немецкий абзац, подставь сценарий из задания. (Длиннее/глубже — глава по теме.)
 > 3. **Вопрос из практикума** → [08_Praktika.md](08_Praktika.md) (блоки ❓ Fragen aus den Anleitungen).
 > 4. **Лог/Wireshark** → [09_Wireshark_Guide.md](09_Wireshark_Guide.md). **Расчёт** → §4 ниже.
 > 5. Cmd+F работает и по-немецки, и по-русски. Цитата дословно — оригинал в скрипте.
@@ -32,6 +32,7 @@
 | [10_Glossar_DE_RU.md](10_Glossar_DE_RU.md) | Alphabetisches Glossar + Verwechslungs-Trainer | — | ✅ |
 | [11_Uebungen.md](11_Uebungen.md) | **Probeklausur** (100 P, alle Themen, mit Lösungen) | — | ✅ |
 | [12_Schnellzugriff.md](12_Schnellzugriff.md) | ⚡ **Kurzantworten** für kurze Fragen + alle Zuordnungstabellen | — | ✅ |
+| [13_Antwortbank.md](13_Antwortbank.md) | 📝 **Fertige Musterantworten** für Freitext-Fragen (zum Anpassen) | — | ✅ |
 
 ---
 
