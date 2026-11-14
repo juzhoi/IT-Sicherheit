@@ -105,6 +105,119 @@
 
 ---
 
+## 1.6 Kap. 2 — Netz-Szenario (die Klassiker: Subnetting & OSI) 🧮⭐⭐
+> Signature-Aufgabe der Netzwerk-Themen. Volle Übung in [02 → B/C/D/E](02_Rechnernetze.md).
+
+**a) Subnetting 🧮** — *Eine Firma nutzt das Netz `192.168.10.0/26`.*
+> **✅** Maske **255.255.255.192** (/26 → 2 Hostbits frei im letzten Oktett, Blöcke à **64**). Netzadresse **192.168.10.0**, Broadcast **192.168.10.63**, Hostbereich **.1–.62**, **62 Hosts** (2⁶−2). Nächster Block: .64/26, dann .128/26, .192/26.
+
+**b) Gleiches Subnetz? 🧮** — *Können `192.168.10.50/26` und `192.168.10.100/26` direkt kommunizieren?*
+> **✅** Nein. .50 → Netz **.0/26**, .100 → Netz **.64/26** → verschiedene Subnetze → **Router nötig**. 🎓 Falle: nur Masken vergleichen reicht nicht, die **Kombination IP+Maske** entscheidet.
+
+**c) Dienst/Angriff → OSI-Schicht (Zuordnung) ⭐**
+| Element | Schicht |
+|---|---|
+| MAC-Adresse, ARP, Switch | 2 |
+| IP-Adresse, Router, ICMP (ping) | 3 |
+| TCP/UDP, Ports, SYN-Flood | 4 |
+| HTTP, DNS, SQLi, Phishing | 7 |
+> 🎓 Falle: **Switch = Schicht 2, Router = Schicht 3**; ARP wird oft fälschlich auf 3 gelegt (es ordnet IP↔MAC zu, arbeitet aber auf 2).
+
+**d) 🧮 Seq/Ack** — *Empfangen: Seq=1000, Länge=500 Byte. Welche Ack sendet der Empfänger?*
+> **✅** Ack = Seq + Len = **1500** (bei reinem SYN oder FIN ohne Daten: +1).
+
+## 1.7 Kap. 3 — Vorfall → Angriff + Schutzziel + Gegenmaßnahme ⭐⭐ (Kernbild der Klausur)
+> *Die wichtigste Aufgabe des Angriffs-Kapitels: Szenario lesen → Angriff benennen → betroffenes Schutzziel → Gegenmaßnahme.* Volle Übung in [03 → B/C](03_Angriffe.md).
+
+| # | Vorfall in der Firma | Angriff | Schutzziel | Gegenmaßnahme |
+|---|---|---|---|---|
+| N1 | Der Webserver bekommt in Sekunden tausende halbe TCP-Verbindungen von wechselnden IPs. | **SYN-Flooding (DDoS)** | Verfügbarkeit | SYN-Cookies, Rate-Limiting, Firewall |
+| N2 | Im LAN tauchen zwei IPs mit **derselben MAC** auf, der Verkehr läuft über einen Dritten. | **ARP-Spoofing/MitM** | Vertraulichkeit | statische ARP-Einträge, TLS, Monitoring |
+| N3 | Login mit `' OR 1=1 -- -` verschafft Admin-Zugang ohne Passwort. | **SQL-Injection** | Vertraulichkeit/Integrität | Prepared Statements, Eingabevalidierung |
+| N4 | Im Gästebuch taucht bei allen Besuchern ein JavaScript-Popup auf. | **Stored XSS** | Integrität (→ Vertraulichkeit) | Output-Encoding, serverseitige Prüfung |
+| N5 | Aufruf einer Bank-Domain landet durch gefälschte Namensauflösung auf einer Fake-Seite. | **DNS-(Cache-)Poisoning** | Authentizität | DNSSEC, HTTPS-Zertifikatsprüfung |
+| N6 | Passwörter werden im offenen WLAN im Klartext mitgelesen. | **Sniffing (passiv)** | Vertraulichkeit | Verschlüsselung (TLS/WPA) |
+> 🎓 Merksatz: *nur mitlesen → Vertraulichkeit · verändern → Integrität · lahmlegen → Verfügbarkeit · Identität fälschen → Authentizität.*
+
+## 1.8 Kap. 4 — Begriffe des Darknets zuordnen ⭐
+> Signature-Aufgabe: Begriff → Bereich/Bedeutung. Volle Übung in [04 → B](04_Anonymitaet_TOR.md).
+
+**a) Begriff → Bedeutung**
+| Begriff | Bedeutung |
+|---|---|
+| Surface Web | indexiert, frei (Wikipedia) — kleinster Teil |
+| Deep Web | nicht indexiert, hinter Login (Onlinebanking) — größter Teil |
+| Dark Web | Inhalte im Darknet, `.onion`, Spezialsoftware |
+| Darknet | das **Netz** (TOR, I2P) — Infrastruktur |
+> 🎓 Falle: **Darknet (Netz) ≠ Dark Web (Inhalte)**; **Deep Web ≠ Dark Web**.
+
+**b) Szenario → Identifizierungstechnik** — *Eine Webseite erkennt dich wieder, obwohl du Cookies gelöscht und die IP gewechselt hast.*
+> **✅** **Browser-Fingerprinting** (Schriftarten, Auflösung, Canvas …). Schutz im TOR-Browser: Fenstergröße/Letterboxing nicht ändern, englische Version.
+
+**c)** *Wozu dienen die 3 TOR-Knoten und welcher sieht was?*
+> **✅** **Guard** (Eintritt) kennt deine IP, nicht das Ziel · **Middle** kennt keines von beiden · **Exit** kennt das Ziel und sieht den Inhalt (falls kein HTTPS). Keiner kennt Quelle **und** Ziel zugleich.
+
+## 1.9 Kap. 5 — Vorfall → Malware-Typ ⭐⭐
+> Signature-Aufgabe. Volle Übung in [05 → B/C](05_Malware.md); zentrale Tabelle Virus/Wurm/Trojaner dort.
+
+| # | Beschreibung | Typ |
+|---|---|---|
+| W1 | Verbreitet sich **selbstständig** über eine Netzwerklücke, ohne dass jemand etwas öffnet. | **Wurm** |
+| W2 | Hängt sich an eine `.exe`, wird erst beim **Öffnen** der Datei aktiv. | **Virus** |
+| W3 | Als kostenloses Spiel getarnt, öffnet im Hintergrund heimlich Zugriff. | **Trojaner (+ Backdoor)** |
+| W4 | Verschlüsselt alle Dateien und fordert Lösegeld. | **Ransomware** |
+| W5 | Zeichnet unbemerkt alle Tastatureingaben auf. | **Keylogger (Spyware)** |
+| W6 | Versteckt die Schadsoftware tief im System vor dem Virenscanner. | **Rootkit** |
+| W7 | Der infizierte PC wird ferngesteuert für DDoS genutzt. | **Bot/Zombie (Botnetz)** |
+> 🎓 Falle: **Wurm** (selbst, über Netz) vs. **Virus** (Wirt + Nutzeraktion) vs. **Trojaner** (getarnt, verbreitet sich nicht selbst). Und **Erkennung** zuordnen: signaturbasiert (bekannt) / heuristisch (verdächtige Merkmale) / verhaltensbasiert (Sandbox).
+
+## 1.10 Kap. 6 — Welches Verfahren / welcher Schlüssel? 🧮⭐⭐
+> Signature-Aufgaben. Volle Übung in [06 → D RSA, F DH, G Signatur](06_Kryptografie.md).
+
+**a) Schutzziel → kryptografisches Mittel (Zuordnung)**
+| Ziel | Mittel |
+|---|---|
+| Vertraulichkeit | Verschlüsselung (AES / RSA) |
+| Integrität | Hash (SHA-256) |
+| Integrität + Authentizität (symm.) | MAC (HMAC) |
+| + Verbindlichkeit | digitale Signatur |
+| sicherer Schlüsselaustausch | Diffie-Hellman / Public-Key |
+| Public Key ↔ Identität | Zertifikat (CA/PKI) |
+
+**b) Welcher Schlüssel? ⭐ (Lieblings-Falle)**
+> *A will B eine vertrauliche, signierte Nachricht schicken.*
+> **✅ Verschlüsseln** mit dem **öffentlichen Schlüssel von B** (nur B kann entschlüsseln). **Signieren** mit dem **eigenen privaten Schlüssel von A** (jeder prüft mit A's öffentlichem). 🎓 Falle: nie mit dem eigenen öffentlichen verschlüsseln.
+
+**c) RSA 🧮** — *p=3, q=11, e=3. Bestimmen Sie d und verschlüsseln Sie m=4.*
+> **✅** n = p·q = **33**; φ = (p−1)(q−1) = **20**; d mit e·d ≡ 1 mod 20 → **d = 7** (3·7=21≡1). c = mᵉ mod n = 4³ mod 33 = 64 mod 33 = **31**. Rückprobe: 31⁷ mod 33 = 4 ✓.
+
+**d) ECB vs. CBC** — *Warum bleibt ein Bild im ECB-Modus erkennbar?*
+> **✅** ECB verschlüsselt jeden Block unabhängig → gleiche Klartextblöcke → gleiche Chiffreblöcke → Muster bleiben. CBC verkettet per XOR mit dem vorigen Block → Muster verschwinden.
+
+## 1.11 Kap. 7 — Bell-LaPadula & Zugriffsmodell 🧮⭐⭐
+> Signature-Aufgabe der Zugriffskontrolle. Volle Übung in [07 → F BLP, C Matrix, G Unix](07_Zugriffskontrolle.md).
+
+**a) Bell-LaPadula ⭐⭐** — Stufen: öffentlich(0) < intern(1) < vertraulich(2) < geheim(3). *Subjekt S hat „vertraulich" (2).*
+| Aktion auf Objekt O | erlaubt? | Regel |
+|---|---|---|
+| S **liest** „öffentlich"(0) | ✔ ja | read down (SC(S)≥SC(O)) |
+| S **liest** „geheim"(3) | ✗ nein | **no read up** |
+| S **schreibt** „geheim"(3) | ✔ ja | write up (SC(S)≤SC(O)) |
+| S **schreibt** „öffentlich"(0) | ✗ nein | **no write down** |
+> 🎓 Merke **„read down, write up"**; Zweck = **Vertraulichkeit**. Biba ist das Spiegelbild (Integrität).
+
+**b) Szenario → Zugriffsmodell**
+| Situation | Modell |
+|---|---|
+| Der Datei-Eigentümer vergibt die Rechte selbst (Unix). | **DAC** |
+| Das System erzwingt Stufen/Labels, Nutzer kann nichts ändern. | **MAC** |
+| Rechte hängen an der Rolle „Buchhalter", nicht an der Person. | **RBAC** |
+
+**c) Unix-Rechte 🧮** — *Datei soll: Eigentümer lesen+schreiben+ausführen, Gruppe lesen+ausführen, andere nichts.*
+> **✅** `rwxr-x---` = **750**. Umgekehrt: `640` = `rw-r-----` (Eigentümer rw, Gruppe r, andere nichts).
+
+---
+
 # TEIL 2 — Professor-Fallen: Verwechslungen, die Punkte kosten
 
 > Für jede Falle: **das Unterscheidungskriterium**. Wenn eine Frage zwei dieser Begriffe nebeneinanderstellt, ist genau dieses Kriterium gefragt.
