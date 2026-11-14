@@ -17,6 +17,8 @@
 | Короткое «что это / назови» | **этот файл**, Cmd+F |
 | Открытый вопрос (3–6 предложений) | [13_Antwortbank.md](13_Antwortbank.md) — готовый абзац |
 | Zuordnung (1a 2b 3c) | этот файл → раздел **🔗 Zuordnungstabellen** (ниже) |
+| Ситуация компании → критерий | [14_Klausurfallen.md](14_Klausurfallen.md) |
+| Что путают / где ловушка | [14_Klausurfallen.md](14_Klausurfallen.md) Teil 2 |
 | Расчёт 🧮 | [00_Index.md](00_Index.md) §4 Формулы → подробно в главе |
 | Лог/Wireshark 🦈 | [09_Wireshark_Guide.md](09_Wireshark_Guide.md) |
 | Про практикум | [08_Praktika.md](08_Praktika.md) |

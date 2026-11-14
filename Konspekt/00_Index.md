@@ -6,6 +6,7 @@
 > 1. **Короткий вопрос** (назвать / определить / 1a-2b-3c / верно-неверно) → сразу **[12_Schnellzugriff.md](12_Schnellzugriff.md)**, Cmd+F по слову. Ответ в одну строку.
 > 2. **Открытый вопрос текстом** → **[13_Antwortbank.md](13_Antwortbank.md)**: готовый немецкий абзац, подставь сценарий из задания. (Длиннее/глубже — глава по теме.)
 > 3. **Вопрос из практикума** → [08_Praktika.md](08_Praktika.md) (блоки ❓ Fragen aus den Anleitungen).
+> 3b. **«Ситуация компании → критерий»** (Zuordnung Szenario→Schutzziel/Grundfunktion) + частые ловушки → **[14_Klausurfallen.md](14_Klausurfallen.md)**.
 > 4. **Лог/Wireshark** → [09_Wireshark_Guide.md](09_Wireshark_Guide.md). **Расчёт** → §4 ниже.
 > 5. Cmd+F работает и по-немецки, и по-русски. Цитата дословно — оригинал в скрипте.
 >
@@ -33,6 +34,7 @@
 | [11_Uebungen.md](11_Uebungen.md) | **Probeklausur** (100 P, alle Themen, mit Lösungen) | — | ✅ |
 | [12_Schnellzugriff.md](12_Schnellzugriff.md) | ⚡ **Kurzantworten** für kurze Fragen + alle Zuordnungstabellen | — | ✅ |
 | [13_Antwortbank.md](13_Antwortbank.md) | 📝 **Fertige Musterantworten** für Freitext-Fragen (zum Anpassen) | — | ✅ |
+| [14_Klausurfallen.md](14_Klausurfallen.md) | 🎯 **Szenario-Zuordnung** (Firma→Kriterium) + häufigste Verwechslungen | — | ✅ |
 
 ---
 
